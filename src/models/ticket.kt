@@ -10,16 +10,4 @@ class Ticket (
     val purchaseDateTime : LocalDateTime = LocalDateTime.now(),
     val ticketID : String = ""
 ){
-    companion object {
-        private var ticketCounter = 1000
-        const val ORIGIN_STATION_NAME = "Central Station"
 }
-   //adding the generate ticket id function
-
-    fun generateTicketId(): String {
-        ticketCounter++
-        return "TKT-${ticketCounter}-${System.currentTimeMillis() % 10000}"
-    }
-}
-
-val ticketId: String = generateTicketId()
