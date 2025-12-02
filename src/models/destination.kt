@@ -8,3 +8,10 @@ data class Destination(
     var takings: Double = 0.0    // Total revenue from this destination
 )
 }
+
+fun recordSale(price: Double) {
+    // add the record of the sales
+    ticketsSold++
+    takings += price
+    println("Sale recorded for $name: Ticket #$ticketsSold, Total takings: £%.2f".format(takings))
+}
