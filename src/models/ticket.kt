@@ -1,13 +1,17 @@
 package models
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
-class Ticket (
-    var origin:String = "" ,
-    var destination:String = "" ,
-    var ticketType:String = "" ,
-    var price : Double = 0.0 ,
-    val purchaseDateTime : LocalDateTime = LocalDateTime.now(),
-    val ticketID : String = ""
-){
+enum class TicketType{
+    SINGLE , RETURN
 }
+
+data class Ticket(
+    val origin :String,
+    val ticketType : TicketType,
+    val destination :String,
+    val price : Double,
+    val purchaseDate : LocalDate = LocalDate.now(),
+
+    )
