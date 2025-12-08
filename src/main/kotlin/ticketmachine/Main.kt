@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
@@ -11,4 +12,14 @@ fun main() {
         // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
         println("i = $i")
     }
+=======
+package ticketmachine
+
+
+class TicketMachine{
+    private val destination = mutableListOf<Destination>()
+    private val users = mutableListOf<User>()
+    private val specialOffers = mutableListOf<SpecialOffers>()
+    private val stationTakings = mutableMapOf<String, Double>()
+>>>>>>> master
 }
