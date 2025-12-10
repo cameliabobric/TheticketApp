@@ -2,12 +2,12 @@ package data
 
 import java.time.LocalDate
 
-
+// TICKET TYPE
 enum class TicketType {
     SINGLE, RETURN
 }
 
-
+// TICKET
 data class Ticket(
     val origin: String,
     val destination: String,
@@ -16,26 +16,26 @@ data class Ticket(
     val purchaseDate: LocalDate = LocalDate.now()
 )
 
-
+// DESTINATION
 data class Destination(
-    var stationName: String,        // var because Member B can update
-    var singlePrice: Double,        // var because Member B can update
-    var returnPrice: Double,         // var because Member B can update
-    var salesCount: Int = 0         // var because Member A updates when selling
+    var stationName: String,
+    var singlePrice: Double,
+    var returnPrice: Double,
+    var salesCount: Int = 0
 )
 
-
+// USER (for Member C)
 data class User(
     val username: String,
     val password: String,
     val isAdmin: Boolean
 )
 
-
+// SPECIAL OFFER (for Member C)
 data class SpecialOffer(
     val id: Int,
     val stationName: String,
-    val discount: Double,           // Percentage (e.g., 20.0 for 20%)
+    val discount: Double,   // 20.0 = 20%
     val startDate: LocalDate,
     val endDate: LocalDate,
     val description: String
