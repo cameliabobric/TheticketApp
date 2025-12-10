@@ -4,23 +4,13 @@ import com.ticketmachine.TicketMachine
 import data.*
 import java.time.LocalDate
 
-/**
- * MEMBER A (VALI)
- * Responsibilities:
- * - Ticket search by destination and type
- * - Money insertion and balance management
- * - Ticket purchase with validation
- * - Station takings tracking
- * - (Optional) Apply special offers from TicketMachine (Member C)
- */
+
 class TicketService(private val machine: TicketMachine) {
 
     // Tracks money inserted by user
     private var currentBalance: Double = 0.0
 
-    /**
-     * Search tickets by destination and ticket type
-     */
+
     fun searchTickets() {
         println("\n=== SEARCH TICKETS ===")
 
@@ -193,13 +183,11 @@ class TicketService(private val machine: TicketMachine) {
 
     fun getBalance(): Double = currentBalance
 
-    fun returnMoney() {
-        if (currentBalance > 0) {
-            println("Returning £${formatPrice(currentBalance)}")
-            currentBalance = 0.0
-        } else {
-            println("No money to return.")
-        }
+    fun returnMoney() = if (currentBalance > 0) {
+        println("Returning £${formatPrice(currentBalance)}")
+        currentBalance = 0.0
+    } else {
+        println("No money to return.")
     }
 }
 
@@ -228,36 +216,10 @@ fun main() {
                 println("Goodbye!")
                 return
             }
+
             else -> println("Invalid option!")
         }
     }
 }
-// ===== SIMPLE MAIN FOR TESTING MEMBER A =====
-fun main() {
-    println("=== MEMBER A (VALI) - TESTING ===")
 
-    val machine = TicketMachine()
-    val service = TicketService(machine)
 
-    while (true) {
-        println("\n--- MEMBER A TEST MENU ---")
-        println("1. Search tickets")
-        println("2. Insert money")
-        println("3. Check balance")
-        println("4. Return money")
-        println("0. Exit")
-
-        print("Choice: ")
-        when (readLine()?.toIntOrNull()) {
-            1 -> service.searchTickets()
-            2 -> service.insertMoney()
-            3 -> println("Balance: £${service.getBalance()}")
-            4 -> service.returnMoney()
-            0 -> {
-                println("Goodbye!")
-                return
-            }
-            else -> println("Invalid option!")
-        }
-    }
-}
