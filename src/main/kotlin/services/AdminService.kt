@@ -1,18 +1,20 @@
 package services
 
+import data.TicketMachine
 import data.Destination
-import utils.ConsoleUI
-
+import data.SpecialOffer
+import java.util.Locale
+import java.util.Locale.getDefault
 
 class AdminService(private val machine: TicketMachine) {
 
 
     fun viewAllDestinations() {
-        // TODO: Display header
-        println("\n*** ALL DESTINATIONS ***")
-        println("*" * 40)
 
-        // TODO: Check if destinations exist
+        println("\n*** ALL DESTINATIONS ***")
+        println("*".repeat(40))
+
+
         val destinations = machine.getDestinations()
         if (destinations.isEmpty()) {
             println("No destinations available.")
@@ -22,7 +24,7 @@ class AdminService(private val machine: TicketMachine) {
         // display table header
         println(String.format("%-3s %-20s %-12s %-12s %-10s",
             "#", "Station Name", "Single (£)", "Return (£)", "Sales"))
-        println("-" * 60)
+        println("-".repeat(40))
 
         // display each destination
         destinations.forEachIndexed { index, dest ->
@@ -37,7 +39,7 @@ class AdminService(private val machine: TicketMachine) {
         }
 
         // display summary statistics
-        println("-" * 40)
+        println("-".repeat(40))
         val totalSales = destinations.sumOf { it.salesCount }
         val avgSinglePrice = destinations.map { it.singlePrice }.average()
         val avgReturnPrice = destinations.map { it.returnPrice }.average()
@@ -257,7 +259,7 @@ class AdminService(private val machine: TicketMachine) {
 
 
         print("\nApply to ALL destinations? (y/n): ")
-        if (readLine()?.toLowerCase() != "y") {
+        if (readLine()?.lowercase(getDefault()) != "y") {
             println("Operation cancelled.")
             return
         }
@@ -291,5 +293,36 @@ class AdminService(private val machine: TicketMachine) {
                 val revenue = machine.getStationTakings(dest.stationName)
                 println("${dest.stationName}: £${String.format("%.2f", revenue)}")
             }
+    }
+}
+
+fun main() {
+    println("=== MEMBER B (CAMELIA) - TESTING ===")
+
+    // Initialize system with test data
+    val machine = TicketMachine()
+    machine.initializeForTesting()
+    val admin = AdminService(machine)
+
+    // Test menu (No login required for Member B)
+    while (true) {
+        println("\n--- ADMIN MENU ---")
+        println("1. View all destinations")
+        println("2. Add new destination")
+        println("3. Update destination")
+        println("4. Adjust all prices")
+        println("5. Generate revenue report")
+        println("0. Exit")
+
+        print("Choice: ")
+        when (readLine()?.toIntOrNull()) {
+            1 -> admin.viewAllDestinations()
+            2 -> admin.addDestination()
+            3 -> admin.updateDestination()
+            4 -> admin.adjustAllPrices()
+            5 -> admin.generateRevenueReport()
+            0 -> break
+            else -> println("Invalid option!")
+        }
     }
 }
