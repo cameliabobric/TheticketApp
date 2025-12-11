@@ -196,3 +196,100 @@ class AdminService(private val machine: TicketMachine) {
             else -> println("Invalid option!")
         }
     }
+
+    fun adjustAllPrices() {
+
+        println("\n*** ADJUST ALL PRICES ***")
+        println("This will adjust ALL ticket prices by a percentage.")
+
+        // TODO: Check destinations exist
+        if (machine.getDestinations().isEmpty()) {
+            println("No destinations available.")
+            return
+        }
+
+        // show quick options
+        println("\nQuick options:")
+        println("1. Increase by 5%")
+        println("2. Increase by 10%")
+        println("3. Decrease by 5%")
+        println("4. Decrease by 10%")
+        println("5. Custom percentage")
+        println("0. Cancel")
+
+        // get choice and calculate factor
+        print("Select option: ")
+        val factor = when (readLine()?.toIntOrNull()) {
+            1 -> 1.05  // 5% increase
+            2 -> 1.10  // 10% increase
+            3 -> 0.95  // 5% decrease
+            4 -> 0.90  // 10% decrease
+            5 -> {
+                // IMPLEMENT: Custom percentage
+                print("Enter percentage change (e.g., 15 for +15%, -20 for -20%): ")
+                val percent = readLine()?.toDoubleOrNull() ?: 0.0
+                1 + (percent / 100)
+            }
+            0 -> {
+                println("Operation cancelled.")
+                return
+            }
+            else -> {
+                println("Invalid option!")
+                return
+            }
+        }
+
+
+        println("\n*** PRICE CHANGE PREVIEW ***")
+        val percentChange = ((factor - 1) * 100)
+        println("${if (percentChange > 0) "Increase" else "Decrease"} of ${Math.abs(percentChange)}%")
+
+        // Show first 3 destinations as preview
+        println("\nSample changes:")
+        machine.getDestinations().take(3).forEach { dest ->
+            val newSingle = dest.singlePrice * factor
+            val newReturn = dest.returnPrice * factor
+            println("${dest.stationName}:")
+            println("  Single: £${dest.singlePrice} → £${String.format("%.2f", newSingle)}")
+            println("  Return: £${dest.returnPrice} → £${String.format("%.2f", newReturn)}")
+        }
+
+
+        print("\nApply to ALL destinations? (y/n): ")
+        if (readLine()?.toLowerCase() != "y") {
+            println("Operation cancelled.")
+            return
+        }
+
+        // apply changes to all destinations
+        var updated = 0
+        machine.getDestinations().forEach { dest ->
+            dest.singlePrice *= factor
+            dest.returnPrice *= factor
+            updated++
+        }
+
+        // confirm completion
+        println("\n Successfully updated $updated destinations!")
+        println("All prices adjusted by ${if (percentChange > 0) "+" else ""}${percentChange}%")
+    }
+
+
+    fun generateRevenueReport() {
+        println("\n*** REVENUE REPORT ***")
+
+        val totalRevenue = machine.getTotalTakings()
+        println("Total System Revenue: £${String.format("%.2f", totalRevenue)}")
+
+        // Show top destinations by revenue
+        println("\nTop Performing Destinations:")
+        machine.getDestinations()
+            .sortedByDescending { machine.getStationTakings(it.stationName) }
+            .take(5)
+            .forEach { dest ->
+                val revenue = machine.getStationTakings(dest.stationName)
+                println("${dest.stationName}: £${String.format("%.2f", revenue)}")
+            }
+    }
+}
