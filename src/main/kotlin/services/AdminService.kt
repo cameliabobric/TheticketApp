@@ -48,3 +48,60 @@ class AdminService(private val machine: TicketMachine) {
         println("Average Single Price: £${String.format("%.2f", avgSinglePrice)}")
         println("Average Return Price: £${String.format("%.2f", avgReturnPrice)}")
     }
+
+    fun addDestination() {
+
+        println("\n=== ADD NEW DESTINATION ===")
+
+        //get station name
+        print("Enter station name: ")
+        val stationName = readLine()?.trim() ?: ""
+
+        // validate  station name not empty
+        if (stationName.isEmpty()) {
+            println("❌ Station name cannot be empty!")
+            return
+        }
+
+        // check if destination already exists
+        if (machine.getDestinations().any { it.stationName.equals(stationName, ignoreCase = true) }) {
+            println("❌ Destination '$stationName' already exists!")
+            return
+        }
+
+        // get single ticket price
+        print("Enter single ticket price (£): ")
+        val singlePrice = readLine()?.toDoubleOrNull()
+
+        // validate single price
+        if (singlePrice == null || singlePrice <= 0) {
+            println("❌ Invalid single ticket price!")
+            return
+        }
+
+        // get return ticket price
+        print("Enter return ticket price (£): ")
+        val returnPrice = readLine()?.toDoubleOrNull()
+
+        // validate return price
+        if (returnPrice == null || returnPrice <= 0) {
+            println("❌ Invalid return ticket price!")
+            return
+        }
+
+        // create new destination
+        val newDestination = Destination(
+            stationName = stationName,
+            singlePrice = singlePrice,
+            returnPrice = returnPrice,
+            salesCount = 0
+        )
+
+        // add to machine
+        machine.addDestination(newDestination)
+
+        // confirm addition
+        println("✅ Destination '$stationName' added successfully!")
+        println("Single: £${String.format("%.2f", singlePrice)}")
+        println("Return: £${String.format("%.2f", returnPrice)}")
+    }
