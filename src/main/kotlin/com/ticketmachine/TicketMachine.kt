@@ -1,22 +1,31 @@
-package com.ticketmachine.data
+package com.ticketmachine
 
+import data.Destination
+import data.SpecialOffer
 import java.time.LocalDate
+
 
 class TicketMachine {
 
+
     private val destinations = mutableListOf<Destination>()
+
+
     private val stationTakings = mutableMapOf<String, Double>()
+
+
     private val originStation = "Birmingham Central"
+
+
     private val specialOffers = mutableListOf<SpecialOffer>()
 
-
     init {
-        // Initialize with default destinations
+
         initializeDestinations()
     }
 
+
     private fun initializeDestinations() {
-        // Add default destinations with prices
         val defaultDestinations = listOf(
             Destination("London", 45.50, 75.00, 0),
             Destination("Manchester", 25.00, 40.00, 0),
@@ -32,18 +41,21 @@ class TicketMachine {
 
         destinations.addAll(defaultDestinations)
 
-        // Initialize takings for each station
+
         destinations.forEach { dest ->
             stationTakings[dest.stationName] = 0.0
         }
     }
 
+
     fun getDestinations(): MutableList<Destination> = destinations
+
 
     fun addDestination(destination: Destination) {
         destinations.add(destination)
         stationTakings[destination.stationName] = 0.0
     }
+
 
     fun getOriginStation(): String = originStation
 
@@ -52,14 +64,17 @@ class TicketMachine {
         stationTakings[stationName] = current + amount
     }
 
+    // get takings for a specific station
     fun getStationTakings(stationName: String): Double {
         return stationTakings[stationName] ?: 0.0
     }
 
+    // get total takings
     fun getTotalTakings(): Double {
         return stationTakings.values.sum()
     }
 
+    // get active special offer for station
     fun getActiveOfferForStation(stationName: String): SpecialOffer? {
         val today = LocalDate.now()
         return specialOffers
@@ -68,18 +83,16 @@ class TicketMachine {
                         !today.isBefore(offer.startDate) &&
                         !today.isAfter(offer.endDate)
             }
-            .maxByOrNull { it.discount }  // Return highest discount if multiple
+            .maxByOrNull { it.discount }  // Highest discount if multiple
     }
+
 
     fun addSpecialOffer(offer: SpecialOffer) {
         specialOffers.add(offer)
     }
 
+
     fun getSpecialOffers(): List<SpecialOffer> = specialOffers.toList()
 
-    fun initializeForTesting() {
-        // Example test data
-        destinations.find { it.stationName == "London" }?.salesCount = 5
-        stationTakings["London"] = 227.50
-    }
+  
 }

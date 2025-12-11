@@ -1,4 +1,4 @@
-package data
+package com.ticketmachine.data
 
 import java.time.LocalDate
 
@@ -15,10 +15,10 @@ data class Ticket(
 )
 
 data class Destination(
-    var stationName: String,        // var because Member B can update
-    var singlePrice: Double,        // var because Member B can update
-    var returnPrice: Double,        // var because Member B can update
-    var salesCount: Int = 0         // var because Member A updates when selling
+    var stationName: String,
+    var singlePrice: Double,
+    var returnPrice: Double,
+    var salesCount: Int = 0
 )
 
 data class User(
@@ -30,7 +30,7 @@ data class User(
 data class SpecialOffer(
     val id: Int,
     val stationName: String,
-    val discount: Double,           // Percentage (e.g., 20.0 for 20%)
+    val discount: Double,
     val startDate: LocalDate,
     val endDate: LocalDate,
     val description: String
