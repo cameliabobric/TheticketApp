@@ -1,9 +1,6 @@
 package utils
 
-/**
- * CONSOLE UI HELPER
- * Provides consistent formatting for all members
- */
+
 object ConsoleUI {
 
     fun showMessage(message: String) {

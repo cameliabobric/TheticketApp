@@ -94,9 +94,5 @@ class TicketMachine {
 
     fun getSpecialOffers(): List<SpecialOffer> = specialOffers.toList()
 
-    // Optional: extra data for testing
-    fun initializeForTesting() {
-        destinations.find { it.stationName == "London" }?.salesCount = 5
-        stationTakings["London"] = 227.50
-    }
+  
 }
